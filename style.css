@@ -1,0 +1,18 @@
+body {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(160, 227, 208);
+}
+.wrapper {
+  background-color: white;
+  width: 800px;
+  height: 400px;
+  margin: 2rem 1rem 1rem 1rem;
+  border-bottom: 1px solid gray;
+  padding: 40px 20px;
+  border-radius: 20px;
+  box-shadow: 0px 15px 10px -15px #111;;
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>ChartJS</title>
+</head>
+<body>
+  <h1>Static Chart</h1>
+  <div class="wrapper">
+    <canvas id="line-chart"></canvas>
+  </div>
+  <h1>Chart.js Dynamic Rendering</h1>
+  <div class="wrapper">
+    <label for="yearSelect">Select the year</label>
+    <select name="year" id="yearSelect" onchange="updateYear()">
+        <option value="2022">2022</option>
+        <option value="2020">2020</option>
+        <option value="2015">2015</option>
+        <option value="2010">2010</option>
+    </select>
+    <canvas id="countryChart"></canvas>
+  </div>
+  <div class="wrapper">
+    <label for="continentSelect">Select the Continent</label>
+    <select name="continent" id="continentSelect" onchange="updateContinent()">
+      <option value="Asia">Asia</option>
+      <option value="Africa">Africa</option>
+      <option value="North America">North America</option>
+      <option value="Europe">Europe</option>
+      <option value="South America">South America</option>
+  </select>
+  <canvas id="continentChart"></canvas>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    let year = 2022
+    let continent = 'Asia'
+
+    const ctx1 = document.getElementById('countryChart');
+    const ctx2 = document.getElementById('continentChart');
+
+    const yearSelect = document.getElementById('yearSelect')
+    const continentSelect = document.getElementById('continentSelect')
+
+    const countryData = {
+      countries: ['China', 'Russia', 'United States', 'India', 'Brazil', 'Australia', 'Canada'],
+      2022: [1425887337, 144713314, 338289857, 1417173173, 215313498, 26177413, 38454327],
+      2020: [1424929781, 145617329, 335942003, 1396387127, 213196304, 25670051, 37888705],
+      2015: [1393715448, 144668389, 324607776, 1322866505, 205188205, 23820236, 35732126],
+      2010: [1348191368, 143242599, 311182845, 1240613620, 196353492, 22019168, 33963412]
+    }
+
+    const continentData = {
+      continents: ['Asia', 'Africa', 'North America','Europe', 'South America'],
+      labels: [1950, 2000, 2020, 2050, 2100],
+      Asia: [1404, 1404,4641, 5290, 4719],
+      Africa:  [227, 810,1340, 2489, 4280],
+      "North America": [549, 485, 747, 696, 741],
+      Europe: [549, 725, 592, 710, 629],
+      "South America": [113, 348, 430, 491, 429],
+    }
+
+    const staticChart = new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+    datasets: [{ 
+        data: [86,114,106,106,107,111,133,221,783,2478],
+        label: "Africa",
+        borderColor: "#3e95cd",
+        fill: false
+      }, { 
+        data: [282,350,411,502,635,809,947,1402,3700,5267],
+        label: "Asia",
+        borderColor: "#8e5ea2",
+        fill: false
+      }, { 
+        data: [168,170,178,190,203,276,408,547,675,734],
+        label: "Europe",
+        borderColor: "#3cba9f",
+        fill: false
+      }, { 
+        data: [40,20,10,16,24,38,74,167,508,784],
+        label: "Latin America",
+        borderColor: "#e8c3b9",
+        fill: false
+      }, { 
+        data: [6,3,2,2,7,26,82,172,312,433],
+        label: "North America",
+        borderColor: "#c45850",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    plugins: {
+        title: {
+        display: true,
+        text: 'World population per region (in millions)'
+      }
+    }
+  }
+});
+
+
+    function updateYear(){
+      year = yearSelect.value
+      countryChart.data.datasets[0].data = countryData[yearSelect.value]
+      countryChart.options.plugins.title.text = `Population for the year ${year}`
+
+      countryChart.update()
+    }
+
+    function updateContinent(){
+      const selected = continentSelect.value;
+      continent = continentSelect.value;
+      console.log(continentChart.config2)
+      chart2.data.datasets[0].data = continentData[continent]
+      chart2.options.plugins.title.text = `Historical and Estimated population of ${continent} in millions`
+      chart2.update()
+    }
+
+    const config1 = {
+      type: 'bar',
+      data: {
+        labels: countryData.countries,
+        datasets: [
+          {
+            label: `Population for the year ${year}`,
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#D68910", "#17A589"],
+            borderColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#D68910", "#17A589"],
+            data: [1425887337, 144713314, 338289857, 1417173173, 215313498, 26177413, 38454327],
+            borderWidth: 1,
+  
+          }
+        ]
+      },
+      options: {
+        plugins: {legend: {
+          display: false
+        },
+        title: {
+          display: true,
+          text: `Population for the year ${year}`
+        },},
+        maintainAspectRatio:true,
+        responsive: true,
+      }
+    }
+
+
+    const config2 = {
+      type: 'line',
+      data: {
+        labels: [1950, 2000, 2020, 2050, 2100],
+        datasets: [
+          {
+            label: `Historical and Predicted Population of ${continent}`,
+            backgroundColor: 'coral',
+            borderColor: 'black',
+            data: [1404, 1404,4641, 5290, 4719],
+            borderWidth: 1,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        // fill:true,
+        plugins: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: `Historical and Estimated population of ${continent} in millions`
+          },
+        },
+        maintainAspectRatio:true,
+        responsive: true,
+      }
+    }
+
+   
+
+    const countryChart = new Chart(ctx1, config1);
+    const chart2 = new Chart(ctx2, config2);
+    console.log(chart2)
+  </script>
+</body>
+</html>
